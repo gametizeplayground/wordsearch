@@ -397,7 +397,17 @@
       return true;
     }
 
-    function placeWord(grid, word) {
+    function hasOverlap(grid, word, row, col, dir) {
+      let [dr, dc] = dir;
+      for (let i = 0; i < word.length; i++) {
+        let r = row + dr * i;
+        let c = col + dc * i;
+        if (grid[r][c] !== '') return true;
+      }
+      return false;
+    }
+
+    function placeWord(grid, word, requireOverlap = false) {
       let attempts = 100;
       let wordArr = word.split('');
       if (Math.random() < 0.5) wordArr.reverse(); // Optionally reverse
@@ -411,13 +421,16 @@
         let minCol = dc < 0 ? Math.abs(dc) * (word.length - 1) : 0;
         let row = getRandomInt(maxRow - minRow) + minRow;
         let col = getRandomInt(maxCol - minCol) + minCol;
+        
         if (canPlace(grid, word, row, col, dir)) {
-          for (let i = 0; i < word.length; i++) {
-            let r = row + dr * i;
-            let c = col + dc * i;
-            grid[r][c] = word[i];
+          if (!requireOverlap || hasOverlap(grid, word, row, col, dir)) {
+            for (let i = 0; i < word.length; i++) {
+              let r = row + dr * i;
+              let c = col + dc * i;
+              grid[r][c] = word[i];
+            }
+            return true;
           }
-          return true;
         }
       }
       return false;
@@ -458,8 +471,19 @@
       do {
         grid = Array.from({ length: ROWS }, () => Array(COLS).fill(''));
         placed = true;
-        for (let word of words) {
-          if (!placeWord(grid, word)) {
+        
+        // Place first word
+        if (!placeWord(grid, words[0])) {
+          placed = false;
+          continue;
+        }
+
+        // Randomly select one word to require overlap
+        const overlapWordIndex = getRandomInt(words.length - 1) + 1;
+        
+        // Place remaining words
+        for (let i = 1; i < words.length; i++) {
+          if (!placeWord(grid, words[i], i === overlapWordIndex)) {
             placed = false;
             break;
           }
