@@ -88,8 +88,8 @@
     .grid {
       position: relative;
       display: grid;
-      grid-template-columns: repeat(6, 1fr);
-      grid-template-rows: repeat(8, 1fr);
+      grid-template-columns: repeat(7, 1fr);
+      grid-template-rows: repeat(9, 1fr);
       font-weight: bold;
       gap: 2px;
       background: #f5f7fa;
@@ -98,7 +98,7 @@
       box-shadow: 0 2px 8px rgba(0,0,0,0.08);
       width: 100%;
       max-width: 400px;
-      aspect-ratio: 6 / 8;
+      aspect-ratio: 7 / 9;
       box-sizing: border-box;
     }
     .cell {
@@ -107,7 +107,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: clamp(1.9em, 4vw, 2.2em);
+      font-size: clamp(1.8em, 3.5vw, 1.9em);
       background: none;
       border-radius: 0;
       cursor: pointer;
@@ -367,8 +367,8 @@
   </div>
   <script>
     const words = ["GAMETIZE", "TILE", "PLAYER", "POINTS", "BADGE", "QUIZ"];
-    const ROWS = 8;
-    const COLS = 6;
+    const ROWS = 9;
+    const COLS = 7;
 
     // Directions: [rowDelta, colDelta]
     const DIRECTIONS = [
